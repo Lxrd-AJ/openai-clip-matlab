@@ -1,6 +1,8 @@
-Flickr8k_text
+Flickr8k_text/*
 Flicker8k_Dataset
 Flickr8k_text.zip
 Flickr8k_Dataset.zip
 __MACOSX
 flickr-dataset
+
+!Flickr8k_text/Flickr8k.lemma.token.txt
