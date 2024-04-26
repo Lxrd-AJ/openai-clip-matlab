@@ -4,6 +4,7 @@ classdef CLIPDatastore < matlab.io.Datastore & matlab.io.datastore.Shuffleable
     properties (Access=private)
         ImageCaptionMap
         ImageFolder
+        BertTokenizer
     end
 
     % Index tracking
@@ -30,6 +31,8 @@ classdef CLIPDatastore < matlab.io.Datastore & matlab.io.datastore.Shuffleable
             this.ImageCaptionMap = dictionary(keys, values);
             this.IndexImages = keys;
             this.Index = 1;
+
+            [~, this.BertTokenizer] = bert();
 
             reset(this);
         end
@@ -85,8 +88,8 @@ classdef CLIPDatastore < matlab.io.Datastore & matlab.io.datastore.Shuffleable
 
     methods(Access=private)
         function out = tokenize(this, caption)
-            out = caption;
-            disp("TODO!")
+            tokenized = encode(this.BertTokenizer, caption);
+            out = tokenized{1};
         end
     end
 end
