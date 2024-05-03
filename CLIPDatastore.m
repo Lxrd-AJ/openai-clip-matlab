@@ -10,6 +10,8 @@ classdef CLIPDatastore < matlab.io.Datastore & matlab.io.datastore.Shuffleable
     % Index tracking
     properties(Access=private)
         Index
+        % A list of all the image file names read from the token .txt (flickr-dataset/Flickr8k.lemma.token.txt)
+        % used to maintain an index of images that have been read
         IndexImages
     end
 
