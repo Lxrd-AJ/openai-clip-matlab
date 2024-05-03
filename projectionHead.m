@@ -1,5 +1,6 @@
 function net = projectionHead(opts)
     arguments
+        opts.Name = "proj"
         opts.ProjectionDims = 256
     end
 
@@ -21,4 +22,5 @@ function net = projectionHead(opts)
 
     net = connectLayers(net, "fc1", "add/in1");
     net = connectLayers(net, "dropout", "add/in2");
+    net = networkLayer(net, Name=opts.Name);
 end
