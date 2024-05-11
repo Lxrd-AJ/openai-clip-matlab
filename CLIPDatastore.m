@@ -67,13 +67,25 @@ classdef CLIPDatastore < matlab.io.Datastore & matlab.io.datastore.Shuffleable
             this.Index = 1;
         end
 
-        function shuffledThis = shuffle(this)
+        function shuffledThis = shuffle(this, opts)
+            arguments
+                this
+                opts.PercentageToKeep = 1
+            end
             % Create a copy of datastore
             shuffledThis = copy(this);
 
             shuffled = randperm(numel(this.IndexImages));
+
+            endIndex = floor(opts.PercentageToKeep * numel(this.IndexImages));
+            shuffled = shuffled(1:endIndex);
             shuffledThis.IndexImages = this.IndexImages(shuffled);
+            
             reset(shuffledThis);
+        end
+
+        function count = numel(this)
+            count = numel(this.IndexImages);
         end
     end
 
