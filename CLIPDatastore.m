@@ -43,7 +43,7 @@ classdef CLIPDatastore < matlab.io.Datastore & matlab.io.datastore.Shuffleable
             tf = this.Index <= numel(this.IndexImages);
         end
 
-        function [image, tokenisedCaption, caption] = read(this)
+        function out = read(this)
             if ~hasdata(this)
                 error("No more data to read");
             end
@@ -61,6 +61,8 @@ classdef CLIPDatastore < matlab.io.Datastore & matlab.io.datastore.Shuffleable
             tokenisedCaption = this.tokenize(caption);
 
             this.Index = this.Index + 1;
+
+            out = {image, tokenisedCaption, caption};
         end
 
         function reset(this)
