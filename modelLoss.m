@@ -11,7 +11,7 @@ function [loss, gradientsNet, gradientTemp, state] = modelLoss(net, images, inpu
     nTextEmbeddings = stripdims(nTextEmbeddings);
     
     % Construct the target distribution
-    numImages = size(imageEmbeddings, 2); % CB
+    numImages = size(imageEmbeddings, 2); % CB -> B
     targets = onehotencode(1:numImages, 1, 'ClassNames', 1:numImages);
 
     logits = (nImEmbeddings' * nTextEmbeddings) * exp(logTemperature);
