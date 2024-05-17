@@ -1,5 +1,5 @@
-function [loss, gradientsNet, gradientTemp] = modelLoss(net, images, inputIDs, attentionMasks, segmentIDs, logTemperature)
-    [imageEmbeddings, textEmbeddings] = forward(net, images, inputIDs, attentionMasks, segmentIDs);
+function [loss, gradientsNet, gradientTemp, state] = modelLoss(net, images, inputIDs, attentionMasks, segmentIDs, logTemperature)
+    [imageEmbeddings, textEmbeddings, state] = forward(net, images, inputIDs, attentionMasks, segmentIDs);
     % Remove the trailing `T` dimension from `textEmbeddings` 
     textEmbeddings = squeeze(textEmbeddings);
     % Normalise the embeddings
@@ -15,9 +15,11 @@ function [loss, gradientsNet, gradientTemp] = modelLoss(net, images, inputIDs, a
     targets = onehotencode(1:numImages, 1, 'ClassNames', 1:numImages);
 
     logits = (nImEmbeddings' * nTextEmbeddings) * exp(logTemperature);
+    probsImText = softmax(logits, 'DataFormat', 'SC');
+    probsTextIm = softmax(logits', 'DataFormat', 'SC');
 
-    lossImages = crossentropy(logits, targets, 'DataFormat', 'SS');
-    lossText = crossentropy(logits', targets, 'DataFormat', 'SS');
+    lossImages = crossentropy(probsImText, targets, 'DataFormat', 'SC');
+    lossText = crossentropy(probsTextIm, targets, 'DataFormat', 'SC');
 
     loss = (lossImages + lossText) / 2;
 

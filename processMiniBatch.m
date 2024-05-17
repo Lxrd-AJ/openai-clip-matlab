@@ -12,4 +12,11 @@ function [imagesBatch, inputIDs, attentionMask, segmentIDs] = processMiniBatch(i
     % TODO: Move image resizing outside into a transform datastore
     imagesBatch = cellfun(@(x) imresize(x, [224 224]), images, UniformOutput=false);
     imagesBatch = cat(4, imagesBatch{:});
+
+    if canUseGPU
+        imagesBatch = gpuArray(imagesBatch);
+        inputIDs = gpuArray(inputIDs);
+        attentionMask = gpuArray(attentionMask);
+        segmentIDs = gpuArray(segmentIDs);
+    end
 end
