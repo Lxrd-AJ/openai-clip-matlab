@@ -1,5 +1,5 @@
 function [imagesBatch, inputIDs, attentionMask, segmentIDs] = processMiniBatch(images, tokenisedCaption, ~) 
-    % Hard code the `PaddingValue` for now
+    % NB: Hard code the `PaddingValue` for now
     % [~, tokenizer] = bert("Model","tiny");
     % paddingValue = tokenizer.PaddingCode;
     paddingValue = 1; % Hard coded bert tokeniser padding code
