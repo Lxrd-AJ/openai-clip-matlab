@@ -7,3 +7,4 @@ flickr-dataset
 
 !Flickr8k_text/Flickr8k.lemma.token.txt
 *.asv
+*.mat
