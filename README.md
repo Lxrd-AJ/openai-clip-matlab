@@ -13,4 +13,12 @@ Data sources for download
 # Other notes
 * Use https://uk.mathworks.com/help/matlab/ref/memmapfile.html to store & query the image embeddings for fast search
 
-# Findings
+# TODO
+- [ ] Design a smaller model (use Bert tiny and design a smaller image encoder)
+    - [ ] Allow the encoder models to learn but with a smaller learning rate
+- [ ] Save the model at different checkpoints during training
+- [ ] Follow model design and training guides in Section 2.4 & 2.5
+    - [ ] Use cosine schedule
+    - [ ] Clip logits scaling temperature parameter to 100 max
+- [ ] Move image resizing outside of the `processMiniBatch` function and into a transform function for the datastore
+- [ ] Front end GUI for interfacing with the model
