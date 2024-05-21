@@ -13,12 +13,19 @@ Data sources for download
 # Other notes
 * Use https://uk.mathworks.com/help/matlab/ref/memmapfile.html to store & query the image embeddings for fast search
 
-# TODO
-- [ ] Design a smaller model (use Bert tiny and design a smaller image encoder)
+# TODO (Training)
+- [ ] Design a smaller model (use Bert tiny and design a smaller image encoder from an existing pretrained image model - use squeezenet)
     - [ ] Allow the encoder models to learn but with a smaller learning rate
 - [ ] Save the model at different checkpoints during training
 - [ ] Follow model design and training guides in Section 2.4 & 2.5
     - [ ] Use cosine schedule
     - [ ] Clip logits scaling temperature parameter to 100 max
 - [ ] Move image resizing outside of the `processMiniBatch` function and into a transform function for the datastore
-- [ ] Front end GUI for interfacing with the model
+- [ ] Upgraded datastore class: Use the provided train, validation and test sets.
+
+
+# TODO (Model Interface)
+- [ ] Wrapper class around the CLIP model
+- [ ] Front end GUI for interfacing with the model (using uicomponentcontainer)
+- [ ] Index an existing folder
+- [ ] Run indexing in `backgroundPool` 

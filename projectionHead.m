@@ -7,7 +7,7 @@ function net = projectionHead(opts)
     net = dlnetwork();
 
     layers = [
-        fullyConnectedLayer(opts.ProjectionDims, Name="fc1")
+        fullyConnectedLayer(opts.ProjectionDims * 2, Name="fc1")
         geluLayer()
         fullyConnectedLayer(opts.ProjectionDims, Name="fc2")
     ];
