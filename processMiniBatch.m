@@ -10,7 +10,7 @@ function [imagesBatch, inputIDs, attentionMask, segmentIDs] = processMiniBatch(i
     segmentIDs = ones(size(inputIDs)); % The `segmentIDs` are always 1, constraint imposed by the `bert` language model
     
     % TODO: Move image resizing outside into a transform datastore
-    imagesBatch = cellfun(@(x) imresize(x, [224 224]), images, UniformOutput=false);
+    imagesBatch = cellfun(@(x) imresize(x, [227 227]), images, UniformOutput=false);
     imagesBatch = cat(4, imagesBatch{:});
 
     if canUseGPU

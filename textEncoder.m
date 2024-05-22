@@ -1,10 +1,10 @@
 function net = textEncoder(opts)
     arguments
         opts.LearnRate = 0
-        opts.BertModel = "tiny"
+        opts.BertModel = "tiny" % 4.3M learnables
     end
     [net, ~] = bert(Model=opts.BertModel);
-    clsEmbeddingLayer = functionLayer(@(x) x(:,:,1), Name='clsTokenEmbedding'); % Takes out the 1st element (CLS Token) along the time dimension
+    clsEmbeddingLayer = functionLayer(@(x) x(:,:,end), Name='clsTokenEmbedding'); % Takes out the 1st element (CLS Token) along the time dimension
     net = dlnetwork([
         networkLayer(net, Name="bert_model")
         clsEmbeddingLayer

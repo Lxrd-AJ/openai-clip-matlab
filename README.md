@@ -11,10 +11,10 @@ Data sources for download
 * Use https://uk.mathworks.com/help/matlab/ref/memmapfile.html to store & query the image embeddings for fast search
 
 # TODO (Training)
-- [ ] Design a smaller model (use Bert tiny and design a smaller image encoder from an existing pretrained image model - use squeezenet)
-    - [ ] Allow the encoder models to learn but with a smaller learning rate
-- [ ] Use [SEP] token from bert rather than [CLS] token
-- [ ] Allow the model to learn the logits scaling temperature
+- [x] Design a smaller model (use Bert tiny and design a smaller image encoder from an existing pretrained image model - use squeezenet)
+    - [x] Allow the encoder models to learn but with a smaller learning rate
+- [x] Use [SEP] token from bert rather than [CLS] token
+- [x] Allow the model to learn the logits scaling temperature
 - [ ] Save the model at different checkpoints during training
 - [ ] Follow model design and training guides in Section 2.4 & 2.5
     - [ ] Use cosine schedule
