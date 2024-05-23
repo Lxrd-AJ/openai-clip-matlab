@@ -15,13 +15,13 @@ Data sources for download
     - [x] Allow the encoder models to learn but with a smaller learning rate
 - [x] Use [SEP] token from bert rather than [CLS] token
 - [x] Allow the model to learn the logits scaling temperature
-- [ ] Save the model at different checkpoints during training
 - [ ] Follow model design and training guides in Section 2.4 & 2.5
     - [ ] Use cosine schedule
     - [ ] Clip logits scaling temperature parameter to 100 max
 - [ ] Move image resizing outside of the `processMiniBatch` function and into a transform function for the datastore
 - [ ] Upgraded datastore class: Use the provided train, validation and test sets.
 - [ ] Calculate accuracy metric: `argmax(logits) == targets`
+- [ ] Save the model at different checkpoints during training
 
 
 # TODO (Model Interface)
