@@ -5,6 +5,7 @@ classdef CLIP < handle
         Net
         ImageInputSize
         Temperature
+        BertTokenizer
     end
 
     methods
@@ -17,6 +18,7 @@ classdef CLIP < handle
             this.Net = dlnet;
             this.ImageInputSize = opts.ImageInputSize;
             this.Temperature = opts.Temperature;
+            [~, this.BertTokenizer] = bert();
         end
 
         % encodeImageAt
@@ -37,6 +39,22 @@ classdef CLIP < handle
             [imageEmbeddings, ~] = predict(this.Net, imagesBatch, dummyTokens, dummyAttentionMasks, dummySegmentIDs);
             imageEmbeddings = imageEmbeddings ./ vecnorm(imageEmbeddings, 2, 1); % Along the `C` dimension in `CB`
             imageEmbeddings = stripdims(imageEmbeddings); 
+        end
+
+        function textEmbeddings = encodeText(this, textToEncode)
+            tokens = encode(this.BertTokenizer, textToEncode);
+            numBatch = numel(textToEncode);
+            paddingValue = this.BertTokenizer.PaddingCode;
+            [tokens, attentionMask] = padsequences(tokens, 2, "PaddingValue", paddingValue); % Returns in CTB format
+            tokens = permute(tokens, [1 3 2]); % Change to CBT format
+            attentionMask = permute(attentionMask, [1 3 2]);
+            segmentIDs = ones(size(tokens)); % The `segmentIDs` are always 1, constraint imposed by the `bert` language model
+
+            dummyImage = dlarray(randn([this.ImageInputSize 3]), "SSC");
+
+            [~, textEmbeddings] = predict(this.Net, dummyImage, tokens, attentionMask, segmentIDs);
+            textEmbeddings = textEmbeddings ./ vecnorm(textEmbeddings, 2, 1);
+            textEmbeddings = stripdims(textEmbeddings);
         end
     end
 end
