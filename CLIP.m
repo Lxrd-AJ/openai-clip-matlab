@@ -50,8 +50,8 @@ classdef CLIP < handle
             else
                 paddingValue = this.BertTokenizer.PaddingCode;
                 [tokens, attentionMask] = padsequences(tokens, 2, "PaddingValue", paddingValue); % Returns in CTB format
-                tokens = permute(tokens, [1 3 2]); % Change to CBT format
-                attentionMask = permute(attentionMask, [1 3 2]);
+                tokens = dlarray(permute(tokens, [1 3 2]), "CBT"); % Change to CBT format
+                attentionMask = dlarray(permute(attentionMask, [1 3 2]), "CBT");
             end
             segmentIDs = dlarray(ones(size(tokens)), 'CBT'); % The `segmentIDs` are always 1, constraint imposed by the `bert` language model
 
@@ -70,13 +70,7 @@ classdef CLIP < handle
             nTextEmbeddings = stripdims(nTextEmbeddings);
             logits = (nImEmbeddings' * nTextEmbeddings) * this.Temperature;
             
-            if isscalar(textToEncode)
-                % `logits` is a column vector, so compare along this
-                % vertical vector
-                probs = softmax(logits, "DataFormat", "CS");
-            else
-                probs = softmax(logits, "DataFormat", "SC");
-            end
+            probs = softmax(logits, "DataFormat", "CS");
         end
 
         % function textEmbeddings = encodeText(this, textToEncode)
