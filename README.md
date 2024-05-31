@@ -22,13 +22,13 @@ Data sources for download
 - [ ] Upgraded datastore class: Use the provided train, validation and test sets.
 - [ ] Calculate accuracy metric: `argmax(logits) == targets`
 - [ ] Save the model at different checkpoints during training
+- [ ] Train on Flickr30k dataset
 
 
 # TODO (Model Interface)
 - [ ] Wrapper class around the CLIP model
     - [ ] See API in https://github.com/openai/CLIP?tab=readme-ov-file#api 
         - [x] Encode images
-        - [ ] Encode Text queries
         - [ ] Get softmax and logit scores for a batch of (image, text) pair
     - [ ] Find the top-k images that match a given query
 - [ ] Comparison against CIFAR-10(100)

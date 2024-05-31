@@ -1,13 +1,14 @@
 function net = imageEncoder(opts)
     arguments
-        opts.LearnRate = 0
+        opts.LearnRate = 1
+        opts.Weights = "pretrained"
     end
     % resnet = imagePretrainedNetwork("resnet50", Weights="pretrained");
     % net = setLearnRate(resnet, opts.LearnRate);
     % net = networkLayer(net, Name="image_encoder", OutputNames="avg_pool");
 
     % `net` has about 750k learnables
-    net = imagePretrainedNetwork("squeezenet", Weights="pretrained");
+    net = imagePretrainedNetwork("squeezenet", Weights=opts.Weights);
     layersToRemove = [
         "drop9"
         "conv10"

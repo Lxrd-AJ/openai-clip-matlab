@@ -1,6 +1,6 @@
 function net = textEncoder(opts)
     arguments
-        opts.LearnRate = 0
+        opts.LearnRate = 1e-3
         opts.BertModel = "tiny" % 4.3M learnables
     end
     [net, ~] = bert(Model=opts.BertModel);
