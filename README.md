@@ -18,12 +18,15 @@ Data sources for download
 - [x] Use [SEP] token from bert rather than [CLS] token
 - [x] Allow the model to learn the logits scaling 
 - [ ] Support training on the train, validation and test sets
+    - [x] Update datastore
+    - [ ] Calculate accuracy metric: `argmax(logits) == targets`
+    - [ ] In training loop perform validation while training
+    - [ ] Compute accuracy on validation set 
 - [ ] Follow model design and training guides in Section 2.4 & 2.5
     - [ ] Use cosine schedule
     - [ ] Clip logits scaling temperature parameter to 100 max
 - [ ] Move image resizing outside of the `processMiniBatch` function and into a transform function for the datastore
 - [ ] Upgraded datastore class: Use the provided train, validation and test sets.
-- [ ] Calculate accuracy metric: `argmax(logits) == targets`
 - [ ] Save the model at different checkpoints during training
 - [ ] Train on Flickr30k dataset
 
