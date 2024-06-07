@@ -1,4 +1,6 @@
 # openai-clip-matlab
+[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=Lxrd-AJ/openai-clip-matlab&file=playground.mlx)
+
 MATLAB implementation of the OpenAI CLIP deep learning model
 
 ## Flickr Dataset
@@ -14,7 +16,8 @@ Data sources for download
 - [x] Design a smaller model (use Bert tiny and design a smaller image encoder from an existing pretrained image model - use squeezenet)
     - [x] Allow the encoder models to learn but with a smaller learning rate
 - [x] Use [SEP] token from bert rather than [CLS] token
-- [x] Allow the model to learn the logits scaling temperature
+- [x] Allow the model to learn the logits scaling 
+- [ ] Support training on the train, validation and test sets
 - [ ] Follow model design and training guides in Section 2.4 & 2.5
     - [ ] Use cosine schedule
     - [ ] Clip logits scaling temperature parameter to 100 max
@@ -29,7 +32,7 @@ Data sources for download
 - [ ] Wrapper class around the CLIP model
     - [ ] See API in https://github.com/openai/CLIP?tab=readme-ov-file#api 
         - [x] Encode images
-        - [ ] Get softmax and logit scores for a batch of (image, text) pair
+        - [x] Get softmax and logit scores for a batch of (image, text) pair
     - [ ] Find the top-k images that match a given query
 - [ ] Comparison against CIFAR-10(100)
     - https://colab.research.google.com/github/openai/clip/blob/master/notebooks/Interacting_with_CLIP.ipynb 
