@@ -40,6 +40,3 @@ Data sources for download
 - [ ] Front end GUI for interfacing with the model (using uicomponentcontainer)
 - [ ] Index an existing folder
 - [ ] Run indexing in `backgroundPool` 
-
-# TODO (House Keeping)
-- [ ] Add Open in MATLAB Online banner

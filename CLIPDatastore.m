@@ -20,15 +20,30 @@ classdef CLIPDatastore < matlab.io.Datastore & matlab.io.datastore.Shuffleable
             arguments
                 opts.Lemma = "./Flickr8k_text/Flickr8k.lemma.token.txt"
                 opts.ImageFolder = "./Flicker8k_Dataset"
+                opts.TrainTestVal = "./flickr-dataset/Flickr_8k.trainImages.txt"
             end
             this.ImageFolder = opts.ImageFolder;
 
             captions = readlines(opts.Lemma);
             captions = arrayfun(@(x) strsplit(x, "\t"), captions, UniformOutput=false);
             captions = vertcat(captions{:});
+
+            captionsToUse = string.empty(0,2);
+
+            if ~isempty(opts.TrainTestVal)
+                filterList = readlines(opts.TrainTestVal);
+                keys = captions(:,1);
+                for idx=1:numel(filterList)
+                    found = find(contains(keys, filterList(idx)));
+                    if ~isempty(found)
+                        toAdd = captions(found,:);
+                        captionsToUse = vertcat(captionsToUse, toAdd);
+                    end
+                end
+            end
             
-            keys = captions(:,1);
-            values = captions(:,2);
+            keys = captionsToUse(:,1);
+            values = captionsToUse(:,2);
             % Store as in-memory dictionary
             this.ImageCaptionMap = dictionary(keys, values);
             this.IndexImages = keys;
