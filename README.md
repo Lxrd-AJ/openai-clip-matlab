@@ -3,6 +3,8 @@
 
 MATLAB implementation of the OpenAI CLIP deep learning model
 
+> For training code see [trainCLIP.mlx](trainCLIP.md)
+
 # CLIP Interface
 ```matlab
 if ~isfile("net-gpu-poor-squeezenet-bert-tiny.mat")
