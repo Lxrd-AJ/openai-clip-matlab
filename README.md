@@ -28,11 +28,6 @@ clip =
 
 % First gather all image paths from the dataset
 imgBaseDir = "./flickr-dataset/Flicker8k_Dataset/";
-% folderContents = dir(imgBaseDir);
-% boolImagesInFolder = arrayfun(@(x) ~x.isdir, folderContents);
-% folderContents = folderContents(boolImagesInFolder);
-% imagePaths = arrayfun(@(s) fullfile(s.folder, s.name), folderContents, UniformOutput=false)
-% allImagePaths = string(imagePaths);
 
 % Test Images
 devImages = readlines("flickr-dataset/Flickr_8k.devImages.txt");
@@ -44,7 +39,6 @@ someImagePaths = randsample(devImages, 20);
 ```
 
 ```matlab
-%imshow(imread(someImagePaths(1)));
 images = arrayfun(@(x) imread(x), someImagePaths, UniformOutput=false);
 montage(images)
 ```
@@ -52,7 +46,6 @@ montage(images)
 ![figure_1.png](playground_media/figure_1.png)
 
 ```matlab
-%imageEmbeddings = clip.encodeImagesAt(someImagePaths);
 [probs, logits] = clip.predict(someImagePaths, ["two Dogs", "Birthday Party"]);
 disp(probs)
 ```
@@ -102,14 +95,6 @@ montage(maxImages)
 
 ![figure_2.png](playground_media/figure_2.png)
 
-```matlab
-% im2imLogits = imageEmbeddings' * imageEmbeddings * 40; % temperature of 100
-% im2imProbs = softmax(im2imLogits, "DataFormat", "SC")
-% % Visually check that the last 2x2 submatrix is not equal to 1, should be
-% % around 0.5
-% disp("The last 2 duplicated images")
-% im2imProbs(end-1:end, end-1:end)
-```
 
 ## Other Notes
 ```matlab
