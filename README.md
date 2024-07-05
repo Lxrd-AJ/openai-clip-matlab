@@ -111,7 +111,7 @@ montage(maxImages)
 % im2imProbs(end-1:end, end-1:end)
 ```
 
-## Notes
+## Other Notes
 ```matlab
 datastore = CLIPDatastore(ImageFolder="./flickr-dataset/Flicker8k_Dataset");
 ds = shuffle(datastore, "PercentageToKeep", 1)
