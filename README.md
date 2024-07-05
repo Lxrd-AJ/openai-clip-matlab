@@ -3,6 +3,114 @@
 
 MATLAB implementation of the OpenAI CLIP deep learning model
 
+# CLIP Interface
+```matlab
+if ~isfile("net-gpu-poor-squeezenet-bert-tiny.mat")
+    !curl -O https://github.com/Lxrd-AJ/openai-clip-matlab/releases/download/v1.0.0/net-gpu-poor-squeezenet-bert-tiny.mat
+end
+
+load net-gpu-poor-squeezenet-bert-tiny.mat net logTemperature
+```
+
+```matlab
+imageInputSize = net.Layers(1).Layers(1).InputSize(1:2);
+clip = CLIP(net, Temperature=exp(logTemperature), ImageInputSize=imageInputSize)
+```
+
+```matlabTextOutput
+clip = 
+  CLIP with no properties.
+
+```
+
+```matlab
+% Try encoding some images
+
+% First gather all image paths from the dataset
+imgBaseDir = "./flickr-dataset/Flicker8k_Dataset/";
+% folderContents = dir(imgBaseDir);
+% boolImagesInFolder = arrayfun(@(x) ~x.isdir, folderContents);
+% folderContents = folderContents(boolImagesInFolder);
+% imagePaths = arrayfun(@(s) fullfile(s.folder, s.name), folderContents, UniformOutput=false)
+% allImagePaths = string(imagePaths);
+
+% Test Images
+devImages = readlines("flickr-dataset/Flickr_8k.devImages.txt");
+devImages = fullfile(imgBaseDir, devImages);
+
+% Get some random images from the dataset
+someImagePaths = randsample(devImages, 20);
+
+```
+
+```matlab
+%imshow(imread(someImagePaths(1)));
+images = arrayfun(@(x) imread(x), someImagePaths, UniformOutput=false);
+montage(images)
+```
+
+![figure_1.png](playground_media/figure_1.png)
+
+```matlab
+%imageEmbeddings = clip.encodeImagesAt(someImagePaths);
+[probs, logits] = clip.predict(someImagePaths, ["two Dogs", "Birthday Party"]);
+disp(probs)
+```
+
+```matlabTextOutput
+  20x2 single gpuArray dlarray
+
+    0.0000    0.0003
+    0.0000    0.0000
+    0.0000    0.9989
+    0.0000    0.0005
+    0.0000    0.0001
+    0.0000    0.0000
+    0.0000    0.0000
+    0.0000    0.0000
+    0.0000    0.0000
+    0.0000    0.0000
+    0.0000    0.0000
+    0.9998    0.0000
+    0.0000    0.0000
+    0.0000    0.0000
+    0.0000    0.0000
+    0.0000    0.0000
+    0.0002    0.0000
+    0.0000    0.0002
+    0.0000    0.0000
+    0.0000    0.0000
+```
+
+```matlab
+[maxProb, maxIdx] = max(extractdata(gather(probs)));
+disp("Query Match Probability: " + maxProb)
+```
+
+```matlabTextOutput
+    "Query Match Probability: 0.99983"    "Query Match Probability: 0.99886"
+```
+
+```matlab
+
+maxImages = {};
+for idx=1:numel(maxIdx)
+    maxImages{end+1} = imread(someImagePaths(maxIdx(idx)));
+end
+montage(maxImages)
+```
+
+![figure_2.png](playground_media/figure_2.png)
+
+```matlab
+% im2imLogits = imageEmbeddings' * imageEmbeddings * 40; % temperature of 100
+% im2imProbs = softmax(im2imLogits, "DataFormat", "SC")
+% % Visually check that the last 2x2 submatrix is not equal to 1, should be
+% % around 0.5
+% disp("The last 2 duplicated images")
+% im2imProbs(end-1:end, end-1:end)
+```
+
 ## Notes
 ```matlab
 datastore = CLIPDatastore(ImageFolder="./flickr-dataset/Flicker8k_Dataset");
@@ -250,113 +358,6 @@ size(out)
 ans = 1x2
    256     1
 
-```
-# CLIP Interface
-```matlab
-if ~isfile("net-gpu-poor-squeezenet-bert-tiny.mat")
-    !curl -O https://github.com/Lxrd-AJ/openai-clip-matlab/releases/download/v1.0.0/net-gpu-poor-squeezenet-bert-tiny.mat
-end
-
-load net-gpu-poor-squeezenet-bert-tiny.mat net logTemperature
-```
-
-```matlab
-imageInputSize = net.Layers(1).Layers(1).InputSize(1:2);
-clip = CLIP(net, Temperature=exp(logTemperature), ImageInputSize=imageInputSize)
-```
-
-```matlabTextOutput
-clip = 
-  CLIP with no properties.
-
-```
-
-```matlab
-% Try encoding some images
-
-% First gather all image paths from the dataset
-imgBaseDir = "./flickr-dataset/Flicker8k_Dataset/";
-% folderContents = dir(imgBaseDir);
-% boolImagesInFolder = arrayfun(@(x) ~x.isdir, folderContents);
-% folderContents = folderContents(boolImagesInFolder);
-% imagePaths = arrayfun(@(s) fullfile(s.folder, s.name), folderContents, UniformOutput=false)
-% allImagePaths = string(imagePaths);
-
-% Test Images
-devImages = readlines("flickr-dataset/Flickr_8k.devImages.txt");
-devImages = fullfile(imgBaseDir, devImages);
-
-% Get some random images from the dataset
-someImagePaths = randsample(devImages, 20);
-
-```
-
-```matlab
-%imshow(imread(someImagePaths(1)));
-images = arrayfun(@(x) imread(x), someImagePaths, UniformOutput=false);
-montage(images)
-```
-
-![figure_1.png](playground_media/figure_1.png)
-
-```matlab
-%imageEmbeddings = clip.encodeImagesAt(someImagePaths);
-[probs, logits] = clip.predict(someImagePaths, ["two Dogs", "Birthday Party"]);
-disp(probs)
-```
-
-```matlabTextOutput
-  20x2 single gpuArray dlarray
-
-    0.0000    0.0003
-    0.0000    0.0000
-    0.0000    0.9989
-    0.0000    0.0005
-    0.0000    0.0001
-    0.0000    0.0000
-    0.0000    0.0000
-    0.0000    0.0000
-    0.0000    0.0000
-    0.0000    0.0000
-    0.0000    0.0000
-    0.9998    0.0000
-    0.0000    0.0000
-    0.0000    0.0000
-    0.0000    0.0000
-    0.0000    0.0000
-    0.0002    0.0000
-    0.0000    0.0002
-    0.0000    0.0000
-    0.0000    0.0000
-```
-
-```matlab
-[maxProb, maxIdx] = max(extractdata(gather(probs)));
-disp("Query Match Probability: " + maxProb)
-```
-
-```matlabTextOutput
-    "Query Match Probability: 0.99983"    "Query Match Probability: 0.99886"
-```
-
-```matlab
-
-maxImages = {};
-for idx=1:numel(maxIdx)
-    maxImages{end+1} = imread(someImagePaths(maxIdx(idx)));
-end
-montage(maxImages)
-```
-
-![figure_2.png](playground_media/figure_2.png)
-
-```matlab
-% im2imLogits = imageEmbeddings' * imageEmbeddings * 40; % temperature of 100
-% im2imProbs = softmax(im2imLogits, "DataFormat", "SC")
-% % Visually check that the last 2x2 submatrix is not equal to 1, should be
-% % around 0.5
-% disp("The last 2 duplicated images")
-% im2imProbs(end-1:end, end-1:end)
 ```
 
 
